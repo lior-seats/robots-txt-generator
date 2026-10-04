@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>robots.txt Generator — Block AI Crawlers (GPTBot, ClaudeBot, Bytespider)</title>
+  <meta name="description" content="Free robots.txt generator. Block AI crawlers (GPTBot, ClaudeBot, meta-externalagent) in one click. Presets for common crawler policies. Copy or download instantly." />
+  <link rel="canonical" href="https://lior-seats.github.io/robots-txt-generator/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://lior-seats.github.io/robots-txt-generator/" />
+  <meta property="og:title" content="robots.txt Generator — Block AI Crawlers (GPTBot, ClaudeBot, Bytespider)" />
+  <meta property="og:description" content="Free robots.txt generator. Block AI crawlers in one click. Presets for common crawler policies. Copy or download instantly." />
+  <meta property="og:site_name" content="robots-txt-generator" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="robots.txt Generator — Block AI Crawlers" />
+  <meta name="twitter:description" content="Free robots.txt generator. Block AI crawlers (GPTBot, ClaudeBot, meta-externalagent) in one click." />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f1117;
+      --card: #1a202c;
+      --border: #2d3748;
+      --text: #e2e8f0;
+      --text-muted: #a0aec0;
+      --text-dim: #718096;
+      --green: #2f855a;
+      --green-hover: #276749;
+      --green-light: #48bb78;
+      --amber-bg: #7c2d12;
+      --amber-border: #f97316;
+      --amber-text: #fed7aa;
+      --blue: #3182ce;
+      --input-bg: #0f1117;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    header .logo { font-size: 22px; }
+    header h1 { font-size: 18px; font-weight: 700; }
+    header .tagline { font-size: 13px; color: var(--text-muted); margin-left: auto; }
+
+    /* ── Main layout ── */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 16px 48px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .hero h2 {
+      font-size: 26px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .hero p {
+      color: var(--text-muted);
+      font-size: 15px;
+    }
+
+    /* Presets row */
+    .presets-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .preset-btn {
+      padding: 7px 14px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 500;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .preset-btn:hover { background: #2d3748; }
+    .preset-btn.active {
+      border-color: var(--green-light);
+      background: rgba(72,187,120,0.12);
+      color: var(--green-light);
+    }
+
+    /* Two-column grid */
+    .tool-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    @media (min-width: 760px) {
+      .tool-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* Cards */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .card-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    /* Bot sections */
+    .bot-section { margin-bottom: 20px; }
+    .bot-section:last-of-type { margin-bottom: 0; }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* AI crawlers section — highlighted */
+    .ai-section {
+      background: rgba(124,45,18,0.25);
+      border: 1px solid var(--amber-border);
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 20px;
+    }
+    .ai-section .section-label {
+      color: var(--amber-border);
+      margin-bottom: 4px;
+    }
+    .ai-note {
+      font-size: 12px;
+      color: var(--amber-text);
+      margin-bottom: 10px;
+      opacity: 0.85;
+    }
+
+    /* Bot rows */
+    .bot-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      cursor: pointer;
+    }
+    .bot-row:last-child { border-bottom: none; }
+    .bot-row:hover { background: rgba(255,255,255,0.02); border-radius: 4px; }
+
+    .bot-row input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--green-light);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .bot-name {
+      font-size: 14px;
+      font-weight: 500;
+      flex: 1;
+    }
+    .badge {
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.07);
+      color: var(--text-dim);
+      white-space: nowrap;
+    }
+
+    /* Options */
+    .options-section {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+    .form-group { margin-bottom: 14px; }
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .form-group input {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 10px;
+      color: var(--text);
+      font-size: 14px;
+      font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .form-group input:focus { border-color: var(--green); }
+
+    /* Output panel */
+    .output-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .output-meta {
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    textarea#output {
+      width: 100%;
+      height: 360px;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      color: var(--green-light);
+      font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+      font-size: 13px;
+      line-height: 1.6;
+      resize: vertical;
+      outline: none;
+      caret-color: var(--text);
+    }
+
+    .output-stats {
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-top: 6px;
+      text-align: right;
+    }
+
+    /* Action buttons */
+    .action-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 18px;
+      border-radius: 7px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary {
+      background: var(--green);
+      color: #fff;
+    }
+    .btn-primary:hover { background: var(--green-hover); }
+    .btn-secondary {
+      background: #2d3748;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { background: #374151; }
+    .btn-copy.copied {
+      background: var(--green-hover);
+      color: #fff;
+    }
+
+    /* Share row */
+    .share-row {
+      display: none;
+      gap: 10px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .share-row.visible { display: flex; }
+    .share-label {
+      font-size: 12px;
+      color: var(--text-dim);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .btn-share-x {
+      background: #000;
+      color: #fff;
+      border: 1px solid #333;
+    }
+    .btn-share-x:hover { background: #111; }
+    .btn-share-link {
+      background: #1a365d;
+      color: #90cdf4;
+      border: 1px solid #2b6cb0;
+    }
+    .btn-share-link:hover { background: #2a4a7f; }
+
+    /* CTA section */
+    .cta-section {
+      margin-top: 40px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width: 600px) {
+      .cta-section { grid-template-columns: 1fr 1fr; }
+    }
+
+    .cta-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .cta-card .cta-icon { font-size: 22px; }
+    .cta-card h3 { font-size: 15px; font-weight: 700; }
+    .cta-card p { font-size: 13px; color: var(--text-muted); flex: 1; }
+    .cta-card a.cta-btn {
+      display: inline-block;
+      margin-top: 4px;
+      padding: 9px 18px;
+      background: var(--green);
+      color: #fff;
+      border-radius: 7px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      transition: background 0.15s;
+      text-align: center;
+    }
+    .cta-card a.cta-btn:hover { background: var(--green-hover); }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 24px 16px;
+      color: var(--text-dim);
+      font-size: 12px;
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <span class="logo">🤖</span>
+  <h1>robots-txt-generator</h1>
+  <span class="tagline">Block AI crawlers in one click</span>
+</header>
+
+<main>
+  <div class="hero">
+    <h2>Generate your robots.txt file</h2>
+    <p>Control which bots can crawl your site — block AI training data collectors instantly.</p>
+  </div>
+
+  <!-- Presets -->
+  <div class="presets-row">
+    <button class="preset-btn" id="preset-block-ai" onclick="applyPreset('block-ai')">🚫 Block all AI crawlers</button>
+    <button class="preset-btn" id="preset-search-only" onclick="applyPreset('search-only')">🔍 Allow only search engines</button>
+    <button class="preset-btn" id="preset-allow-all" onclick="applyPreset('allow-all')">✅ Allow all</button>
+    <button class="preset-btn" id="preset-custom">✏️ Custom</button>
+  </div>
+
+  <div class="tool-grid">
+    <!-- Left panel: Config -->
+    <div class="card">
+      <div class="card-title">Bot Configuration</div>
+
+      <!-- Search Engines -->
+      <div class="bot-section">
+        <div class="section-label">🔍 Search Engines</div>
+        <div id="bots-search"></div>
+      </div>
+
+      <!-- AI Crawlers -->
+      <div class="ai-section">
+        <div class="section-label">🤖 AI Crawlers</div>
+        <div class="ai-note">Block these to prevent AI training data collection</div>
+        <div id="bots-ai"></div>
+      </div>
+
+      <!-- Other Bots -->
+      <div class="bot-section">
+        <div class="section-label">🕷️ Other Bots</div>
+        <div id="bots-other"></div>
+      </div>
+
+      <!-- Options -->
+      <div class="options-section">
+        <div class="card-title">Options</div>
+        <div class="form-group">
+          <label for="disallow-path">Block path:</label>
+          <input type="text" id="disallow-path" value="/" placeholder="/" oninput="generate()" />
+        </div>
+        <div class="form-group">
+          <label for="sitemap-url">Sitemap URL (optional):</label>
+          <input type="text" id="sitemap-url" placeholder="https://yoursite.com/sitemap.xml" oninput="generate()" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Right panel: Output -->
+    <div class="card">
+      <div class="output-label">
+        <div class="card-title" style="margin-bottom:0">Generated robots.txt</div>
+        <span class="output-meta" id="output-meta">Live preview</span>
+      </div>
+
+      <textarea id="output" readonly spellcheck="false"></textarea>
+      <div class="output-stats" id="output-stats"></div>
+
+      <div class="action-row">
+        <button class="btn btn-primary btn-copy" id="copy-btn" onclick="copyOutput()">📋 Copy robots.txt</button>
+        <button class="btn btn-secondary" onclick="downloadOutput()">⬇️ Download .txt</button>
+      </div>
+
+      <div class="share-row" id="share-row">
+        <span class="share-label">Share:</span>
+        <button class="btn btn-share-x" onclick="shareOnX()">𝕏 Share on X</button>
+        <button class="btn btn-share-link" id="link-btn" onclick="copyLink()">🔗 Copy link</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTAs -->
+  <div class="cta-section">
+    <div class="cta-card">
+      <div class="cta-icon">✅</div>
+      <h3>Verify your robots.txt is working</h3>
+      <p>Check if AI crawlers can actually reach your site right now.</p>
+      <a class="cta-btn" href="https://lior-seats.github.io/crawl-check/" target="_blank" rel="noopener">Check your site with crawl-check →</a>
+    </div>
+    <div class="cta-card">
+      <div class="cta-icon">📊</div>
+      <h3>Monitor AI crawler traffic in real-time</h3>
+      <p>See which bots actually visit your site and estimate bandwidth costs.</p>
+      <a class="cta-btn" href="https://lior-seats.github.io/crawlguard-waitlist/" target="_blank" rel="noopener">Get CrawlGuard →</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  Built by <a href="https://lior-seats.github.io" style="color:#48bb78;text-decoration:none">lior-seats</a> · Free forever · No data collected
+</footer>
+
+<script>
+// ── Bot definitions ──
+const BOT_DEFS = {
+  search: [
+    { id: 'Googlebot',    name: 'Googlebot',    badge: 'Google',     default: true },
+    { id: 'Bingbot',      name: 'Bingbot',      badge: 'Microsoft',  default: true },
+    { id: 'DuckDuckBot',  name: 'DuckDuckBot',  badge: 'DuckDuckGo', default: true },
+    { id: 'Yandex',       name: 'Yandex',       badge: 'Yandex',     default: false },
+    { id: 'Baiduspider',  name: 'Baiduspider',  badge: 'Baidu',      default: false },
+  ],
+  ai: [
+    { id: 'GPTBot',               name: 'GPTBot',               badge: 'OpenAI',       default: false },
+    { id: 'ClaudeBot',            name: 'ClaudeBot',            badge: 'Anthropic',    default: false },
+    { id: 'anthropic-ai',         name: 'anthropic-ai',         badge: 'Anthropic',    default: false },
+    { id: 'meta-externalagent',   name: 'meta-externalagent',   badge: 'Meta',         default: false },
+    { id: 'Bytespider',           name: 'Bytespider',           badge: 'ByteDance',    default: false },
+    { id: 'PerplexityBot',        name: 'PerplexityBot',        badge: 'Perplexity',   default: false },
+    { id: 'CCBot',                name: 'CCBot',                badge: 'Common Crawl', default: false },
+    { id: 'ChatGPT-User',         name: 'ChatGPT-User',         badge: 'OpenAI',       default: false },
+  ],
+  other: [
+    { id: 'AhrefsBot',   name: 'AhrefsBot',   badge: 'Ahrefs',   default: true },
+    { id: 'SemrushBot',  name: 'SemrushBot',  badge: 'Semrush',  default: true },
+  ],
+};
+
+// State: bot-id → allowed (true) or blocked (false)
+const state = {};
+let interacted = false;
+
+function initState() {
+  for (const [, bots] of Object.entries(BOT_DEFS)) {
+    for (const bot of bots) {
+      state[bot.id] = bot.default;
+    }
+  }
+}
+
+function renderSection(containerId, bots) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = '';
+  for (const bot of bots) {
+    const row = document.createElement('label');
+    row.className = 'bot-row';
+    row.innerHTML = `
+      <input type="checkbox" id="cb-${bot.id}" ${state[bot.id] ? 'checked' : ''} onchange="onBotChange('${bot.id}', this.checked)" />
+      <span class="bot-name">${bot.name}</span>
+      <span class="badge">${bot.badge}</span>
+    `;
+    el.appendChild(row);
+  }
+}
+
+function renderAll() {
+  renderSection('bots-search', BOT_DEFS.search);
+  renderSection('bots-ai',     BOT_DEFS.ai);
+  renderSection('bots-other',  BOT_DEFS.other);
+}
+
+function onBotChange(id, checked) {
+  state[id] = checked;
+  interacted = true;
+  setActivePreset('custom');
+  showShare();
+  generate();
+}
+
+// ── Preset logic ──
+function applyPreset(preset) {
+  if (preset === 'block-ai') {
+    for (const bot of BOT_DEFS.ai) state[bot.id] = false;
+    for (const bot of [...BOT_DEFS.search, ...BOT_DEFS.other]) state[bot.id] = bot.default;
+  } else if (preset === 'search-only') {
+    for (const bot of BOT_DEFS.search) {
+      state[bot.id] = ['Googlebot','Bingbot','DuckDuckBot'].includes(bot.id);
+    }
+    for (const bot of [...BOT_DEFS.ai, ...BOT_DEFS.other]) state[bot.id] = false;
+  } else if (preset === 'allow-all') {
+    for (const id of Object.keys(state)) state[id] = true;
+  }
+  interacted = true;
+  setActivePreset(preset);
+  showShare();
+  renderAll();
+  generate();
+}
+
+function setActivePreset(preset) {
+  const map = {
+    'block-ai':    'preset-block-ai',
+    'search-only': 'preset-search-only',
+    'allow-all':   'preset-allow-all',
+    'custom':      'preset-custom',
+  };
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  if (map[preset]) document.getElementById(map[preset]).classList.add('active');
+}
+
+// ── Generator ──
+function generate() {
+  const path = document.getElementById('disallow-path').value.trim() || '/';
+  const sitemap = document.getElementById('sitemap-url').value.trim();
+
+  const now = new Date();
+  const dateStr = now.toDateString();
+
+  const lines = [
+    '# Generated by robots-txt-generator',
+    '# https://lior-seats.github.io/robots-txt-generator/',
+    `# Date: ${dateStr}`,
+    '',
+  ];
+
+  const addBots = (label, bots) => {
+    lines.push(`# ${label}`);
+    for (const bot of bots) {
+      lines.push(`User-agent: ${bot.id}`);
+      if (state[bot.id]) {
+        lines.push('Allow: /');
+      } else {
+        lines.push(`Disallow: ${path}`);
+      }
+      lines.push('');
+    }
+  };
+
+  addBots('Search Engines', BOT_DEFS.search);
+  addBots('AI Crawlers', BOT_DEFS.ai);
+  addBots('Other Bots', BOT_DEFS.other);
+
+  if (sitemap) {
+    lines.push(`Sitemap: ${sitemap}`);
+  }
+
+  // Trim trailing blank lines then add one
+  const content = lines.join('\n').replace(/\n+$/, '') + '\n';
+  const ta = document.getElementById('output');
+  ta.value = content;
+
+  // Stats
+  const charCount = content.length;
+  const lineCount = content.split('\n').length;
+  document.getElementById('output-stats').textContent = `${lineCount} lines · ${charCount} chars`;
+}
+
+// ── Actions ──
+function copyOutput() {
+  const btn = document.getElementById('copy-btn');
+  navigator.clipboard.writeText(document.getElementById('output').value).then(() => {
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = '📋 Copy robots.txt';
+      btn.classList.remove('copied');
+    }, 1500);
+  }).catch(() => {
+    // Fallback
+    document.getElementById('output').select();
+    document.execCommand('copy');
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => { btn.textContent = '📋 Copy robots.txt'; }, 1500);
+  });
+}
+
+function downloadOutput() {
+  const content = document.getElementById('output').value;
+  const blob = new Blob([content], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'robots.txt';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function shareOnX() {
+  const blockedAI = BOT_DEFS.ai.filter(b => !state[b.id]).map(b => b.name);
+  const blocking = blockedAI.length > 0
+    ? `with ${blockedAI.slice(0,3).join(', ')}${blockedAI.length > 3 ? ' & more' : ''} blocked`
+    : '';
+  const text = encodeURIComponent(
+    `Generated my robots.txt ${blocking} 🤖🚫\n\nFree generator: https://lior-seats.github.io/robots-txt-generator/ #SEO #robots #AIcrawlers`
+  );
+  window.open(`https://twitter.com/intent/tweet?text=${text}`, '_blank');
+}
+
+function copyLink() {
+  const btn = document.getElementById('link-btn');
+  navigator.clipboard.writeText('https://lior-seats.github.io/robots-txt-generator/').then(() => {
+    btn.textContent = '✓ Copied!';
+    setTimeout(() => { btn.textContent = '🔗 Copy link'; }, 1500);
+  });
+}
+
+function showShare() {
+  if (interacted) {
+    document.getElementById('share-row').classList.add('visible');
+  }
+}
+
+// ── Init ──
+initState();
+renderAll();
+generate();
+</script>
+
+<!-- Hit pixel -->
+<script>fetch('https://agent-control-plane-w3m9.onrender.com/api/hit?page=robots-txt-generator',{mode:'no-cors'}).catch(()=>{})</script>
+
+</body>
+</html>
